@@ -3872,7 +3872,10 @@ export class ZodLazy<T extends ZodTypeAny> extends ZodType<
   }
 
   get annotations() {
-    return this.schema.annotations;
+    return {
+      ...this.schema.annotations,
+      ...this._def.annotations,
+    };
   }
 
   _parse(input: ParseInput): ParseReturnType<this["_output"]> {
@@ -4497,7 +4500,10 @@ export class ZodDefault<T extends ZodTypeAny> extends ZodType<
   T["_input"] | undefined
 > {
   get annotations() {
-    return this._def.innerType.annotations;
+    return {
+      ...this._def.innerType.annotations,
+      ...this._def.annotations,
+    };
   }
 
   _parse(input: ParseInput): ParseReturnType<this["_output"]> {

@@ -665,7 +665,7 @@ export declare class ZodFunction<Args extends ZodTuple<any, any>, Returns extend
     _parse(input: ParseInput): ParseReturnType<any>;
     parameters(): Args;
     returnType(): Returns;
-    args<Items extends Parameters<(typeof ZodTuple)["create"]>[0]>(...items: Items): ZodFunction<ZodTuple<Items, ZodUnknown>, Returns>;
+    args<Items extends Parameters<typeof ZodTuple["create"]>[0]>(...items: Items): ZodFunction<ZodTuple<Items, ZodUnknown>, Returns>;
     returns<NewReturnType extends ZodType<any, any>>(returnType: NewReturnType): ZodFunction<Args, NewReturnType>;
     implement<F extends InnerTypeOfFunction<Args, Returns>>(func: F): ReturnType<F> extends Returns["_output"] ? (...args: Args["_input"]) => ReturnType<F> : OuterTypeOfFunction<Args, Returns>;
     strictImplement(func: InnerTypeOfFunction<Args, Returns>): InnerTypeOfFunction<Args, Returns>;
@@ -681,7 +681,9 @@ export interface ZodLazyDef<T extends ZodTypeAny = ZodTypeAny> extends ZodTypeDe
 }
 export declare class ZodLazy<T extends ZodTypeAny> extends ZodType<output<T>, ZodLazyDef<T>, input<T>> {
     get schema(): T;
-    get annotations(): ZodAnnotations | undefined;
+    get annotations(): {
+        [x: symbol]: any;
+    };
     _parse(input: ParseInput): ParseReturnType<this["_output"]>;
     static create: <T_1 extends ZodTypeAny>(getter: () => T_1, params?: RawCreateParams) => ZodLazy<T_1>;
 }
@@ -797,7 +799,9 @@ export interface ZodDefaultDef<T extends ZodTypeAny = ZodTypeAny> extends ZodTyp
     typeName: ZodFirstPartyTypeKind.ZodDefault;
 }
 export declare class ZodDefault<T extends ZodTypeAny> extends ZodType<util.noUndefined<T["_output"]>, ZodDefaultDef<T>, T["_input"] | undefined> {
-    get annotations(): ZodAnnotations | undefined;
+    get annotations(): {
+        [x: symbol]: any;
+    };
     _parse(input: ParseInput): ParseReturnType<this["_output"]>;
     removeDefault(): T;
     static create: <T_1 extends ZodTypeAny>(type: T_1, params: {
